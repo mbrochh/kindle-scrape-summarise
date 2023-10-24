@@ -1,17 +1,22 @@
-# Summarising books with ChatGPT, Python and Logseq
+# Slides branch
 
-This is a talk that I presented for the Python User Group Singapore and the
-National Library Board in October 2023.
-
-You can find the slides [here](https://mbrochh.github.io/kindle-scrape-summarise/1)
-
-This is part two of a three part series
-
-1. [Introduction to ChatGPT, Copilot & Whisper](https://mbrochh.github.io/whisper-youtube-transcribe/1)
-2. [Summarising books with ChatGPT, Python and Logseq](https://mbrochh.github.io/kindle-scrape-summarise/1)
-3. Coming soon...
+This branch contains the slides for the talk that I gave on 2023-05-05 at
+the library@harbourfront.
 
 ## Running the slides
 
+* clone this repo 
 * `git checkout slides`
-* Learn more about how to run and build the slides in the README.md in the slides branch
+* `cd slidev`
+* run `npm install`
+* run `npm run dev`
+* browse to `http://localhost:3030/`
+
+## Building the slides
+
+* `git checkout slides`
+* `cd slidev`
+* run `npm run build`
+* `rm -rf ../docs`
+* run `mv dist ../docs`
+* commit and push
