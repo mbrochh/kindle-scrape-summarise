@@ -88,16 +88,31 @@ clicks: 3
 
 ---
 
-# Today's Project: Step 1: Taking Screenshots of a Kindle Page
+# Today's Project: Summarizing Books with ChatGPT and pyTesseract
 
-- We will use Python to take a screenshot
+- Step 1: **Take screenshots** of the Kindle pages
+- Step 2: Use **pyTesseract** to **extract the text** from the screenshots
+- Step 3: **Chunk** the text by subchapter
+- Step 4: **Ask ChatGPT** for a summary
+- Step 5: **Format** the summary for **Logseq**
+
+<div class="flex gap-4 mt-4 max-h-[300px] overflow-hidden">
+  <div><img src="/images/kindle_screenshot.png" class="max-h-[300px] mx-auto" /></div>
+  <div><img src="/images/logseq2.png" class="max-h-[300px] mx-auto" /></div>
+</div>
+
+---
+
+# Step 1: Taking Screenshots of Kindle Pages
+
+- We will use Python's `Pillow` library to take screenshots
 - We will make sure that only the part that contains the actual text is part of the screenshot
 
 <img src="/images/kindle_screenshot.png" class="max-h-[300px] mx-auto mt-4" />
 
 ---
 
-# Today's Project: Step 2: Using Python Tesseract for OCR
+# Step 2: Using Python Tesseract for OCR
 
 - We will use [pytesseract](https://github.com/madmaze/pytesseract) to extract the text from the screenshot
 
@@ -105,7 +120,7 @@ clicks: 3
 
 ---
 
-# Today's Project: Step 3: Chunking Text by Subchapter
+# Step 3: Chunking Text by Subchapter
 
 - We will find a way to extract the text that ranges from one subchapter title to the next
 - Our goal is to turn the book text into a data structure like shown below
@@ -118,7 +133,7 @@ clicks: 3
 
 ---
 
-# Today's Project: Step 4: Asking ChatGPT for a Summary
+# Step 4: Asking ChatGPT for a Summary
 
 - We will create a prompt for ChatGPT
 - When a subchapter is very long, it might have many chunks
@@ -145,7 +160,7 @@ TEXT TO SUMMARISE:
 
 ---
 
-# Today's Project: Step 5: Formatting ChatGPTs Output for Logseq
+# Step 5: Formatting ChatGPTs Output for Logseq
 
 - Finally, we will make sure that the output can be pasted right into [Logseq](https://logseq.com/)
 - For this, we will have to make sure that the indentation is correct for the chapters, subchapters, and summary bulletpoints
@@ -359,7 +374,7 @@ layout: two-cols
 
 <H1>&nbsp;</H1>
 
-```python  {3,15} {maxHeight: '400px'}
+```python  {3,15} {maxHeight:'400px'}
 import time
 import os
 import pytesseract
@@ -413,7 +428,7 @@ outline = {
 
 <img src="/images/chapters_gpt_1.png" class="max-h-[300px] mx-auto" />
 
-<div class="grid grid-cols-3 gap-4 mt-4 max-h-[220px] overflow-hidden">
+<div class="grid grid-cols-2 gap-4 mt-4 overflow-hidden">
   <div><img src="/images/outline.png" /></div>
   <div><img src="/images/ocr_output.png" /></div>
 </div>
@@ -437,6 +452,20 @@ outline = {
 <img src="/images/ask_gpt2.png" class="max-h-[400px] mx-auto" />
 
 ---
+
+# The Idea, Visualised
+
+- We want to turn the text into one big string
+- Then we want to slice the string at the subchapter titles
+- The regex for this slice looks like `Chapter 1 Title|Chapter 2 Title`
+
+<div class="flex gap-4 mt-4">
+  <div><img class="max-h-[500px]" src="/images/re_example1.png" /></div>
+  <div><img src="/images/re_example2.png" /></div>
+  <div><img src="/images/re_example3.png" /></div>
+</div>
+
+---
 layout: two-cols
 ---
 
@@ -450,7 +479,7 @@ layout: two-cols
 
 <h1>&nbsp;</h1>
 
-```python {15,17} {maxHeight: '350px'}
+```python {15,17} {maxHeight:'350px'}
 import re
 import sys
 from .local_settings import FILES_PATH
@@ -491,13 +520,41 @@ if __name__ == "__main__":
 
 ---
 
+# Understanding Tokens...
+
+<img class="max-h-[400px]" src="/images/prompt_calc.png" />
+
+---
+
+# Understanding Chunking...
+
+<img class="max-h-[400px]" src="/images/chunks1.png" />
+
+---
+
+# Understanding Chunking...
+
+<img class="max-h-[400px]" src="/images/chunks2.png" />
+
+---
+
+# Understanding Chunking...
+
+<img class="max-h-[400px]" src="/images/chunks3.png" />
+
+---
+
+# Understanding Chunking...
+
+<img class="max-h-[400px]" src="/images/chunks4.png" />
+
+---
+
 # Download en_core_web_sm
 
 - In the terminal, run `python -m spacy download en_core_web_sm`
 - You can learn more about this [here](https://spacy.io/models/en)
 
----
-layout: two-cols
 ---
 
 # The `summarise.py` File
@@ -509,9 +566,8 @@ layout: two-cols
 - It will save the summaries to a text file in a nice format
 - We can execute this via `python -m kindle_scrape.summarise FILENAME.txt`
 
-::right::
 
-```python {all} {maxHeight: '350px'}
+```python {all} {style:'max-height:250px;overflow:scroll;'}
 import sys
 import re
 import tiktoken
@@ -542,7 +598,6 @@ TEXT TO SUMMARIZE:
 
 # see https://platform.openai.com/docs/models/gpt-3-5
 MODEL = "gpt-3.5-turbo-16k"
-ENCODING = "cl100k_base"
 MODEL_MAX_TOKENS = 16384
 RESPONSE_TOKENS = 4000
 
@@ -704,7 +759,6 @@ if __name__ == "__main__":
         summaries[subchapter_title] = subchapter_summaries
 
     save_summaries(summaries=summaries)
-
 ```
 
 ---
