@@ -34,7 +34,7 @@ css: unocss
 </div>
 
 ---
-clicks: 3
+clicks: 4
 ---
 
 # About PUGS
@@ -53,12 +53,16 @@ clicks: 3
     <li v-click="3">
         Monthly meetups at <a class="text-red" href="https://www.meetup.com/singapore-python-user-group/" target="_blank">https://www.meetup.com/singapore-python-user-group/</a>
     </li>
+    <li v-click="4">
+        Join our Telegram group 
+    </li>
 </ul>
 
-<div class="grid grid-cols-3 gap-4 mt-4 max-h-[220px] overflow-hidden">
+<div class="grid grid-cols-4 gap-4 mt-4 max-h-[220px] overflow-hidden">
   <div v-click="1"><img src="/images/pycon.png" /></div>
   <div v-click="2"><img src="/images/membership.png" /></div>
   <div v-click="3"><img src="/images/meetup.png" /></div>
+  <div v-click="4"><img src="/images/telegram.png" /></div>
 </div>
 
 ---
@@ -796,6 +800,9 @@ if __name__ == "__main__":
 
 - Join the Python User Group: [https://pugs.org.sg/membership](https://pugs.org.sg/membership)
 - Find the slides at [https://bit.ly/pugs-kindle](https://bit.ly/pugs-kindle)
+- Join our Telegram group
+
+<img src="/images/telegram.png" class="max-h-[200px] mt-8 mx-auto" />
 
 ---
 layout: end
