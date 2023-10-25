@@ -550,6 +550,19 @@ if __name__ == "__main__":
 
 ---
 
+# You Won't Believe What Happens Next...
+
+<img class="max-h-[250px]" src="/images/diagram_gpt1.png" />
+<img class="max-h-[250px] mt-1" src="/images/diagram_gpt2.png" />
+
+---
+
+# LOL, OK :)
+
+<img class="max-h-[400px] mt-1" src="/images/diagram_gpt3.png" />
+
+---
+
 # Download en_core_web_sm
 
 - In the terminal, run `python -m spacy download en_core_web_sm`
