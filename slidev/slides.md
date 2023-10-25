@@ -718,6 +718,13 @@ if __name__ == "__main__":
 
 ---
 
+# Oh My God, What Have We Done?!
+
+<img src="/images/comic.jpg" class="max-h-[300px] mx-auto" />
+<p class="text-center text-xs">source: <a href="https://marketoonist.com/2023/03/ai-written-ai-read.html">marketoonist</a></p>
+
+---
+
 # Thank you for your attention!
 
 - Join the Python User Group: [https://pugs.org.sg/membership](https://pugs.org.sg/membership)
