@@ -1,7 +1,7 @@
 ---
 theme: default
 title: Summarising books with ChatGPT, Python and Logseq
-background: images/cover.jpg
+background: images/cover.png
 class: 'text-center'
 highlighter: shiki
 lineNumbers: true
@@ -167,7 +167,7 @@ TEXT TO SUMMARISE:
 
 - Whenever you start a new Python project, you will want to create a new folder for it
 
-```bash {3,4}
+```bash
 mkdir -p ~/Projects/kindle_scrape/kindle_scrape
 
 # Let's `cd` into the newly created folder
@@ -335,6 +335,17 @@ if __name__ == "__main__":
 ```
 
 ---
+
+# Automator
+
+- On MacOS, you can use the Automator app to create a shortcut that will run the `screenshot.py` file
+
+<div class="flex gap-4 mt-4 max-h-[300px] overflow-hidden">
+  <div><img src="/images/automator.png" class="max-h-[300px] mx-auto" /></div>
+  <div><img src="/images/shortcut.png" class="max-h-[300px] mx-auto" /></div>
+</div>
+
+---
 layout: two-cols
 ---
 
@@ -342,44 +353,38 @@ layout: two-cols
 
 - All the magic happens in the `image_to_string()` function from `pytesseract`
 - The entire rest of the code is just looping over all the images on the disk and then saving the final text file
+- After we have taken some screenshots, we can execute this file via `python -m kindle_scrape.scrape`
 
 ::right::
 
 <H1>&nbsp;</H1>
 
-```python  {5,22} {maxHeight: '400px'}
+```python  {3,15} {maxHeight: '400px'}
 import time
 import os
-import PIL
-import pyscreeze
 import pytesseract
 
 from .local_settings import FILES_PATH
 
-# this is to fix a bug in pyscreeze
-__PIL_TUPLE_VERSION = tuple(int(x) for x in PIL.__version__.split("."))
-pyscreeze.PIL__version__ = __PIL_TUPLE_VERSION
-
-def main():
+def scrape_text():
     texts = []
-    folder_path = f'{FILES_PATH}/screenshots' 
+    folder_path = os.path.join(FILES_PATH, 'screenshots')
     filenames = sorted(os.listdir(folder_path))
     total_files = len(filenames)
     for index, filename in enumerate(filenames):
         print(f'Processing file {index + 1} of {total_files}...')
         file_path = os.path.join(folder_path, filename)
-        if os.path.isfile(file_path):
-            text = pytesseract.image_to_string(file_path)
-            texts.append(text)
+        text = pytesseract.image_to_string(file_path)
+        texts.append(text)
 
-    filename = f'{FILES_PATH}/texts/{int(time.time())}.txt'
-    with open(filename, 'w') as file:
+    filename = f'{int(time.time())}.txt'
+    file_path = os.path.join(FILES_PATH, 'texts', filename)
+    with open(file_path, 'w') as file:
         file.write('\n'.join(texts))
     return filename
 
-
 if __name__ == '__main__':
-    result = main()
+    result = scrape_text()
     print(f'Output file: {result}')
 ```
 
@@ -439,6 +444,7 @@ layout: two-cols
 
 - First, we turn the entire book text into one giant long string
 - Then we use ChatGPT's amazing idea to use `re.split()` to split the text into chunks based on the subchapter titles
+- We can execute this file via `python -m kindle_scrape.subchapters FILENAME.txt`
 
 ::right::
 
@@ -469,7 +475,7 @@ def get_subchapter_contents(filepath):
     found_subchapters = len(subchapters)
     if found_subchapters != expected_subchapter_count:
         raise Exception(
-            f"ERROR: Expected {expected_subchapter_count} subchapters but only found {found_subchapters}"  # noqa
+            f"ERROR: Expected {expected_subchapter_count} subchapters but found {found_subchapters}"  # noqa
         )
 
     return subchapters
@@ -484,6 +490,13 @@ if __name__ == "__main__":
 ```
 
 ---
+
+# Download en_core_web_sm
+
+- In the terminal, run `python -m spacy download en_core_web_sm`
+- You can learn more about this [here](https://spacy.io/models/en)
+
+---
 layout: two-cols
 ---
 
@@ -494,6 +507,7 @@ layout: two-cols
 - It will then split the subchapters into chunks of no more than ~14000 words
 - It will call OpenAI to get a summary for each chunk
 - It will save the summaries to a text file in a nice format
+- We can execute this via `python -m kindle_scrape.summarise FILENAME.txt`
 
 ::right::
 
@@ -692,6 +706,15 @@ if __name__ == "__main__":
     save_summaries(summaries=summaries)
 
 ```
+
+---
+
+# Tadaaaa!
+
+<div class="flex gap-4 mt-4 max-h-[300px] overflow-hidden">
+  <div><img src="/images/logseq1.png" class="max-h-[300px] mx-auto" /></div>
+  <div><img src="/images/logseq2.png" class="max-h-[300px] mx-auto" /></div>
+</div>
 
 ---
 
