@@ -9,7 +9,7 @@ This is part two of a three part series
 
 1. [Introduction to ChatGPT, Copilot & Whisper](https://mbrochh.github.io/whisper-youtube-transcribe/1)
 2. [Summarising books with ChatGPT, Python and Logseq](https://mbrochh.github.io/kindle-scrape-summarise/1)
-3. Coming soon...
+3. [Talk to your notes with Logseq and ChatGPT](https://mbrochh.github.io/logseq-faiss-chatgpt/1)
 
 ## Running the slides
 
