@@ -5,6 +5,8 @@ National Library Board in October 2023.
 
 You can find the slides [here](https://mbrochh.github.io/kindle-scrape-summarise/1)
 
+You can find the vidoe [here](https://www.youtube.com/watch?v=Shex-VKNLuM)
+
 This is part two of a three part series
 
 1. [Introduction to ChatGPT, Copilot & Whisper](https://mbrochh.github.io/whisper-youtube-transcribe/1)
