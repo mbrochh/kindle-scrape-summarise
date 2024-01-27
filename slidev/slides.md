@@ -613,10 +613,11 @@ TEXT TO SUMMARIZE:
 {chunk}
 """
 
-# see https://platform.openai.com/docs/models/gpt-3-5
-MODEL = "gpt-3.5-turbo-16k"
-MODEL_MAX_TOKENS = 16384
-RESPONSE_TOKENS = 4000
+# see https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo
+MODEL = "gpt-4-0125-preview"
+ENCODING = "cl100k_base"
+MODEL_MAX_TOKENS = 30000
+RESPONSE_TOKENS = 2000
 
 
 def slugify(value):
@@ -634,7 +635,7 @@ def slugify(value):
 
 def count_tokens(text):
     """Count tokens in a text string using tiktoken."""
-    enc = tiktoken.encoding_for_model(MODEL)
+    enc = tiktoken.get_encoding(ENCODING)
     tokens = enc.encode(text)
     token_count = len(tokens)
     return token_count
@@ -657,16 +658,14 @@ def get_summary_from_openai(
         subchapter_title=subchapter_title,
         chunk=chunk,
     )
-    prompt_tokens = count_tokens(prompt)
 
     print("Sending prompt to OpenAI API...")
-
 
     # see https://platform.openai.com/docs/api-reference/chat/create
     result = openai.ChatCompletion.create(
         model=MODEL,
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=MODEL_MAX_TOKENS - prompt_tokens - 10,
+        max_tokens=RESPONSE_TOKENS,
         temperature=0,
         n=1,
         stream=False,
@@ -756,7 +755,7 @@ if __name__ == "__main__":
 
     for idx, content in enumerate(subchapters):
         subchapter_title = outline["subchapters"][idx]
-        chunks = split_text(
+        chunks, total_token_count = split_text(
             book_title=book_title,
             chapter_title=chapter_title,
             subchapter_title=subchapter_title,
